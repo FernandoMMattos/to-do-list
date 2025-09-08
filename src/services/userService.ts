@@ -1,7 +1,7 @@
 import api from "./api";
 
 const loginUser = async (email: string, password: string) => {
-  const res = await api.post("/login", { email, password });
+  const res = await api.post("/auth/login", { email, password });
   const { token, userId } = res.data;
   localStorage.setItem("token", token);
   localStorage.setItem("userId", userId);
@@ -20,7 +20,7 @@ const registerUser = async (
     throw new Error("Passwords do not match.");
   }
 
-  const res = await api.post("/register", { email, password });
+  const res = await api.post("/auth/register", { email, password });
   return res.data;
 };
 
