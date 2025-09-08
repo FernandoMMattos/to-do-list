@@ -8,18 +8,18 @@ import { registerUser } from "../services/userService";
 import styled from "styled-components";
 import { errorMessage, successMessage } from "../utils/notifications";
 
+  const StyledForm = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  `;
+
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const StyledForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  `;
 
   const register = async () => {
     if (!email || !password || !confirmPassword) {
@@ -53,7 +53,7 @@ const RegisterPage = () => {
   return (
     <LayoutPage>
       <h1>Welcome, create your account!</h1>
-      <StyledForm onSubmit={handleSubmit}>
+      <StyledForm onSubmit={handleSubmit} autoComplete="off">
         <div>
           <Label htmlFor="email">Email</Label>
           <Input
@@ -63,6 +63,7 @@ const RegisterPage = () => {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
+            autoComplete="off"
           />
         </div>
 
