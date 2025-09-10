@@ -1,5 +1,5 @@
-import { login } from "../../../backend/controllers/authController.js";
-import { connectDB } from "../../../backend/db/mongoClient.js";
+import { login } from "../../backend/controllers/authController.js";
+import { connectDB } from "../../backend/db/mongoClient.js";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
