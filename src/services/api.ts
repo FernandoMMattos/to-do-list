@@ -1,53 +1,16 @@
-import axios, {
-  type InternalAxiosRequestConfig,
-  type AxiosRequestHeaders,
-} from "axios";
-import { getToken } from "./userService";
-
-const API_URL = `${window.location.origin}/api`;
+import axios from "axios";
 
 const api = axios.create({
-  baseURL: API_URL,
-  timeout: 10000,
+  baseURL: "/api", // o Vercel serve os endpoints da pasta /api direto
 });
 
-const handleLogout = () => {
-  localStorage.removeItem("token");
-  localStorage.removeItem("userId");
-  window.location.href = "/login";
-};
-
-api.interceptors.request.use(
-  (config: InternalAxiosRequestConfig) => {
-    const token = getToken();
-    if (token) {
-      if (!config.headers) {
-        config.headers = {} as AxiosRequestHeaders;
-      }
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-api.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response) {
-      console.error(
-        `API response error [${error.response.status}]:`,
-        error.response.data
-      );
-
-      if (error.response.status === 401) {
-        handleLogout();
-      }
-    } else {
-      console.error("Unexpected error:", error.message);
-    }
-    return Promise.reject(error);
+// interceptor para adicionar token em todas as requests
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
   }
-);
+  return config;
+});
 
 export default api;

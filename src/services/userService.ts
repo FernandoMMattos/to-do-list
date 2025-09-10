@@ -1,31 +1,25 @@
 import api from "./api";
 
-const loginUser = async (email: string, password: string) => {
-  const res = await api.post("/auth/login", { email, password });
-  const { token, userId } = res.data;
-  localStorage.setItem("token", token);
-  localStorage.setItem("userId", userId);
-  return { token, userId };
-};
-
-const registerUser = async (
-  email: string,
-  password: string,
-  confirmedPassword: string
-) => {
-  if (!email || !password || !confirmedPassword) {
-    throw new Error("All fields are required.");
-  }
-  if (password !== confirmedPassword) {
-    throw new Error("Passwords do not match.");
-  }
-
+export const registerUser = async (email: string, password: string) => {
   const res = await api.post("/auth/register", { email, password });
   return res.data;
 };
 
-const getUserId = () => localStorage.getItem("userId");
+export const loginUser = async (email: string, password: string) => {
+  const res = await api.post("/auth/login", { email, password });
 
-const getToken = () => localStorage.getItem("token");
+  // salva no localStorage
+  localStorage.setItem("token", res.data.token);
+  localStorage.setItem("userId", res.data.userId);
 
-export { loginUser, registerUser, getUserId, getToken };
+  return res.data;
+};
+
+export const logoutUser = () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("userId");
+};
+
+export const getUserId = (): string | null => {
+  return localStorage.getItem("userId");
+};
