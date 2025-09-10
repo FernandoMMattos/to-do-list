@@ -6,11 +6,11 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import Input from "../components/Input";
 import Button from "../components/Button";
-import type ITasks from "../types/ITasks";
 import { createTask } from "../services/tasksService";
 import styled from "styled-components";
 import { errorMessage, successMessage } from "../utils/notifications";
 import { useIsMobile } from "../hooks/useIsMobile";
+import type ITasks from "../types/ITasks";
 
 const StyledForm = styled.form`
   display: flex;
@@ -57,8 +57,8 @@ const CreateTask = () => {
   const [type, setType] = useState<"personal" | "work" | "">("");
   const [importance, setImportance] = useState<number | null>(null);
   const [hasDeadline, setHasDeadline] = useState<boolean | null>(null);
-  const isMobile = useIsMobile();
 
+  const isMobile = useIsMobile();
   const navigate = useNavigate();
 
   const handleAddTask = async (e: React.FormEvent<HTMLFormElement>) => {

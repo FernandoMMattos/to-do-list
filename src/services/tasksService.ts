@@ -1,14 +1,6 @@
 import api from "./api";
 import { getUserId } from "./userService";
-
-export interface ITask {
-  taskId: string;
-  name: string;
-  status: "pending" | "in progress" | "completed";
-  importance: "low" | "medium" | "high";
-  type: string;
-  deadline?: string | null;
-}
+import type ITasks from "../types/ITasks";
 
 const getValidUserId = (): string => {
   const userId = getUserId();
@@ -16,13 +8,13 @@ const getValidUserId = (): string => {
   return userId;
 };
 
-export const getTasks = async (): Promise<ITask[]> => {
+export const getTasks = async (): Promise<ITasks[]> => {
   const userId = getValidUserId();
   const res = await api.get(`/users/${userId}/tasks`);
   return res.data;
 };
 
-export const createTask = async (taskData: Omit<ITask, "taskId">) => {
+export const createTask = async (taskData: Omit<ITasks, "taskId">) => {
   const userId = getValidUserId();
   const res = await api.post(`/users/${userId}/tasks`, taskData);
   return res.data;
@@ -30,7 +22,7 @@ export const createTask = async (taskData: Omit<ITask, "taskId">) => {
 
 export const updateTask = async (
   taskId: string,
-  updatedData: Partial<ITask>
+  updatedData: Partial<ITasks>
 ) => {
   const userId = getValidUserId();
   const res = await api.put(`/users/${userId}/${taskId}`, updatedData);
@@ -43,8 +35,8 @@ export const deleteTask = async (taskId: string) => {
   return res.data;
 };
 
-export const cycleTaskStatus = async (task: ITask) => {
-  const statuses: ITask["status"][] = ["pending", "in progress", "completed"];
+export const cycleTaskStatus = async (task: ITasks) => {
+  const statuses: ITasks["status"][] = ["pending", "in progress", "completed"];
   const currentIndex = statuses.indexOf(task.status);
   const nextIndex = (currentIndex + 1) % statuses.length;
   const newStatus = statuses[nextIndex];

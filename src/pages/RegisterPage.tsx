@@ -8,11 +8,11 @@ import { registerUser } from "../services/userService";
 import styled from "styled-components";
 import { errorMessage, successMessage } from "../utils/notifications";
 
-  const StyledForm = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  `;
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -35,7 +35,7 @@ const RegisterPage = () => {
     setLoading(true);
 
     try {
-      await registerUser(email, password, confirmPassword);
+      await registerUser(email, password);
       successMessage("User logged in");
       navigate("/login");
     } catch {
